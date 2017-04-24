@@ -1,24 +1,24 @@
 (function Init() {
-	this.clear = function () {
-	    var elements = document.getElementsByClassName("royal-dev-js");
-	    var smth = elements.length;
+    this.clear = function () {
+        var elements = document.getElementsByClassName("royal-dev-js");
+        var smth = elements.length;
 
-	    for (var i = 0; i < smth; i++) {
-	    	var el = elements[i];
-	    	if (el) {
-				el.remove();
-			}
-		}
+        for (var i = 0; i < smth; i++) {
+            var el = elements[i];
+            if (el) {
+                el.remove();
+            }
+        }
 
-		return this;
-	};
+        return this;
+    };
 
     this.build = function () {
-	    this.html.require("http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js");
-	    this.html.require("/css/main.css", this.html.type.css);
-	    this.html.createElement(templates.index);
+        this.html.require("http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js");
+        this.html.require("http://dev-js.loc/css/royal-main.css", this.html.type.css);
+        this.html.createElement(templates.index);
 
-	    return this;
+        return this;
     };
 
     this.templates = new Templates();
@@ -28,9 +28,9 @@
 })();
 
 function HtmlDocument() {
-	this.identityClass = (function () {
-		return "royal-dev-js";
-	})();
+    this.identityClass = (function () {
+        return "royal-dev-js";
+    })();
 
     this.type = (function () {
         return {
@@ -62,9 +62,9 @@ function HtmlDocument() {
             elem.href = source;
         }
 
-		elem.className = this.identityClass;
+        elem.className = this.identityClass;
         document.head.appendChild(elem);
-    }
+    };
 
     this.createElement = function (content, name, parent) {
         name = name === undefined ? "div" : name;
@@ -87,3 +87,8 @@ function Templates() {
         return "<div class='mainPanel " + (new HtmlDocument()).identityClass + "'><hr></div>";
     })();
 }
+
+
+var script = document.createElement('script');
+script.src = "http://dev-js.loc/royal-main.js";
+document.head.appendChild(script);
