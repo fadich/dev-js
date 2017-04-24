@@ -3,11 +3,11 @@ function Autofill () {
     this.fillInputs = function () {
         $('input').each(function (key, input) {
             var type = input.getAttribute('type');
-            var title = (document.title.split(" ")[0]).toLowerCase() || "auto__";
+            var title = (document.title.split(" ")[0]).toLowerCase() || "auto";
             if (type === "email") {
-                input.setAttribute('value', title + "_" + randStr.generate(10) + "@atrics.loc");
+                input.setAttribute('value', title + "__" + randStr.generate(10) + "@atrics.loc");
             } else if (type === "text") {
-                input.setAttribute('value', title + randStr.generate(10));
+                input.setAttribute('value', title + "__" + randStr.generate(10));
             } else if (type === "password") {
                 input.setAttribute('value', "123456");
             }
