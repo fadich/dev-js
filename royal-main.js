@@ -9,15 +9,7 @@
     };
 
     this.clear = function () {
-        var elements = document.getElementsByClassName("royal-dev-js");
-        var len = elements.length;
-
-        for (var i = 0; i < len; i++) {
-            var el = elements[i];
-            if (el) {
-                el.remove();
-            }
-        }
+        this.html.clear(document.getElementsByClassName("royal-dev-js"));
     };
 
     this.build = function () {
@@ -95,12 +87,30 @@ function HtmlDocument() {
         elem.innerHTML = content;
         elem.className = this.identityClass;
         parent.appendChild(elem);
+    };
+
+    this.clear = function (selector) {
+        var elements = selector;
+        var len = elements.length;
+
+        for (var i = 0; i < len; i++) {
+            var el = elements[i];
+            if (el) {
+                el.remove();
+            }
+        }
     }
 }
 
 function Templates() {
     this.index = (function () {
-        return "<div class='royal-mainPanel " + (new HtmlDocument()).identityClass + "'><hr>" +
+        // var els = document.getElementsByClassName("royal-dev-js");
+        return "<div class='royal-mainPanel " + (new HtmlDocument()).identityClass + "'>" +
+                "<div class='royal-panel-nav'>" +
+                    "<button class='royal-close-panel royal-button' " +
+                        "onclick='(new HtmlDocument()).clear(document.getElementsByClassName(\"royal-dev-js\"))'>X</button>" +
+                "</div>" +
+                "<hr>" +
                 "<div class='royal-modules " + (new HtmlDocument()).identityClass + "'>" +
                     "Loading. . ." +
                 "</div>" +
