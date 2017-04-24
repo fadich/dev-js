@@ -1,4 +1,4 @@
-<h4 align="center">ROYAL DEV</h1>
+<h3 align="center">ROYAL DEV</h1>
 <h6 align="center">(the development tools)</h5>
 
 The application provides tools for automating some actions such as:
@@ -11,9 +11,9 @@ It's can be done in several ways:
 - simply specify the "src" path in the script-tag on HTML-layout;
 - send AJAX-request to `{{ servername }}` (in developing);
 - dynamic including the script, by executing simple commands:
- <pre>javascript:
+ `javascript:
  (function () {
     var script = document.createElement('script');
     script.src = "http://dev-js.loc/royal-main.js";
     document.head.appendChild(script); 
- }());</pre>
+ }());`
