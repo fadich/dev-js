@@ -42,3 +42,18 @@
     outline:none !important;
 }
 
+.royal-dragButton {
+    float: left;
+    height: 100%;
+    border: none;
+    background: none;
+    width: 25px;
+    font-size: 25px;
+    text-align: center;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.35);
+}
+
+.royal-dragButton:hover {
+    color: rgba(0, 0, 0, 0.85);
+}

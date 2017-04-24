@@ -13,9 +13,50 @@
     };
 
     this.build = function () {
-        this.html.require("http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js");
+        this.html.require("https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js");
+        this.html.require("https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css", this.html.type.css);
+        this.html.require("https://code.jquery.com/ui/1.12.1/jquery-ui.min.js");
+
         this.html.require("http://dev-js.loc/css/royal-main.css", this.html.type.css);
+
         this.html.createElement(this.templates.index);
+    };
+
+    this.include = function () {
+        var intInc = setInterval(function () {
+            if (typeof $ === 'function') {
+                this.includeLibs();
+                this.includeModules();
+
+                clearInterval(intInc);
+            }
+        }, 250);
+    };
+
+    this.draggablePanel = function () {
+        var intDrag = setInterval(function () {
+            if (typeof $ === 'function' && typeof $().draggable === 'function') {
+                $(".royal-mainPanel").draggable({
+                    grid: [1000,100],
+                    drag: function(event, ui){
+                        ui.position.left = event.clientX;
+                        ui.position.top = event.clientY;
+                    },
+                    // distance: 25,
+
+                    handle:'.royal-dragButton',
+                    opacity:0.5,
+                    cursor:"pointer",
+                    // containment: [0,100, 100,100],
+                    // snap:true,
+                    snapMode:'outer',
+                    snapTolerance:500,
+                    cursorAt:false
+                });
+
+                clearInterval(intDrag);
+            }
+        }, 250);
     };
 
     this.templates = new Templates();
@@ -24,14 +65,9 @@
     /* Rebuilding panel */
     this.clear();
     this.build();
+    this.include();
+    this.draggablePanel();
 
-    var int = setInterval(function () {
-        if (typeof $ === 'function') {
-            this.includeLibs();
-            this.includeModules();
-            clearInterval(int);
-        }
-    }, 250);
 
 })();
 
@@ -109,6 +145,7 @@ function Templates() {
                 "<div class='royal-panel-nav'>" +
                     "<button class='royal-close-panel royal-button' " +
                         "onclick='(new HtmlDocument()).clear(document.getElementsByClassName(\"royal-dev-js\"))'>X</button>" +
+                    "<div class='royal-dragButton'>+</div>" +
                 "</div>" +
                 "<hr>" +
                 "<div class='royal-modules " + (new HtmlDocument()).identityClass + "'>" +
