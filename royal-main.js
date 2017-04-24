@@ -1,30 +1,46 @@
 (function Init() {
+    this.includeLibs = function () {
+        this.html.require("http://dev-js.loc/lib/random/royal-random-string.js");
+    };
+
+    this.includeModules = function () {
+        $('.royal-modules').text("");
+        this.html.require("http://dev-js.loc/modules/autofill/royal-autofill.js");
+    };
+
     this.clear = function () {
         var elements = document.getElementsByClassName("royal-dev-js");
-        var smth = elements.length;
+        var len = elements.length;
 
-        for (var i = 0; i < smth; i++) {
+        for (var i = 0; i < len; i++) {
             var el = elements[i];
             if (el) {
                 el.remove();
             }
         }
-
-        return this;
     };
 
     this.build = function () {
         this.html.require("http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js");
         this.html.require("http://dev-js.loc/css/royal-main.css", this.html.type.css);
-        this.html.createElement(templates.index);
-
-        return this;
+        this.html.createElement(this.templates.index);
     };
 
     this.templates = new Templates();
     this.html = new HtmlDocument();
 
-    this.clear().build();
+    /* Rebuilding panel */
+    this.clear();
+    this.build();
+
+    var int = setInterval(function () {
+        if (typeof $ === 'function') {
+            this.includeLibs();
+            this.includeModules();
+            clearInterval(int);
+        }
+    }, 250);
+
 })();
 
 function HtmlDocument() {
@@ -84,11 +100,10 @@ function HtmlDocument() {
 
 function Templates() {
     this.index = (function () {
-        return "<div class='mainPanel " + (new HtmlDocument()).identityClass + "'><hr></div>";
+        return "<div class='royal-mainPanel " + (new HtmlDocument()).identityClass + "'><hr>" +
+                "<div class='royal-modules " + (new HtmlDocument()).identityClass + "'>" +
+                    "Loading. . ." +
+                "</div>" +
+            "</div>";
     })();
 }
-
-
-var script = document.createElement('script');
-script.src = "http://dev-js.loc/royal-main.js";
-document.head.appendChild(script);
