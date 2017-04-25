@@ -17,6 +17,8 @@
         this.html.require("https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css", this.html.type.css);
         this.html.require("https://code.jquery.com/ui/1.12.1/jquery-ui.min.js");
 
+        this.html.require("https://fonts.googleapis.com/icon?family=Material+Icons", this.html.type.css);
+
         this.html.require("http://dev-js.loc/css/royal-main.css", this.html.type.css);
 
         this.html.createElement(this.templates.index);
@@ -35,27 +37,35 @@
 
     this.draggablePanel = function () {
         var intDrag = setInterval(function () {
-            if (typeof $ === 'function' && typeof $().draggable === 'function') {
-                $(".royal-mainPanel").draggable({
-                    grid: [1000,100],
-                    drag: function(event, ui){
-                        ui.position.left = event.clientX;
-                        ui.position.top = event.clientY;
-                    },
-                    // distance: 25,
-
-                    handle:'.royal-dragButton',
-                    opacity:0.5,
-                    cursor:"pointer",
-                    // containment: [0,100, 100,100],
-                    // snap:true,
-                    snapMode:'outer',
-                    snapTolerance:500,
-                    cursorAt:false
-                });
-
-                clearInterval(intDrag);
+            if (!(typeof $ === 'function' && typeof $().draggable === 'function')) {
+                return;
             }
+            var mainPanel = $(".royal-mainPanel");
+            mainPanel.draggable({
+                distance: 50,
+                handle: ".royal-dragButton",
+                opacity: 0.75,
+                containment: "window",
+                snap: "window",
+                snapMode: "both",
+                snapTolerance: 50,
+                scroll: false
+            });
+
+            mainPanel.resizable({
+                minHeight: 300,
+                minWidth: 300,
+                maxHeight: window.innerHeight,
+                maxWidth: window.innerWidth,
+                handles: "all"
+            });
+
+            // TODO: load saved style.
+            mainPanel.css({
+                "width": "100%"
+            });
+
+            clearInterval(intDrag);
         }, 250);
     };
 
@@ -144,8 +154,10 @@ function Templates() {
         return "<div class='royal-mainPanel " + (new HtmlDocument()).identityClass + "'>" +
                 "<div class='royal-panel-nav'>" +
                     "<button class='royal-close-panel royal-button' " +
-                        "onclick='(new HtmlDocument()).clear(document.getElementsByClassName(\"royal-dev-js\"))'>X</button>" +
-                    "<div class='royal-dragButton'>+</div>" +
+                        "onclick='(new HtmlDocument()).clear(document.getElementsByClassName(\"royal-dev-js\"))'>" +
+                            "<i class='material-icons'>settings_power</i>" +
+                    "</button>" +
+                    "<div class='royal-dragButton'><i class='material-icons'>open_with</i></div>" +
                 "</div>" +
                 "<hr>" +
                 "<div class='royal-modules " + (new HtmlDocument()).identityClass + "'>" +
