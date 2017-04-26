@@ -35,8 +35,26 @@
         }, 250);
     };
 
-    this.draggablePanel = function () {
-        var intDrag = setInterval(function () {
+    this.initPanel = function () {
+        this.settings = (function () {
+            var locSettings = localStorage.royalMainPanel;
+            try {
+                return JSON.parse(locSettings);
+            } catch (e) {
+            }
+            return {};
+        })();
+
+        this.addSettings = function (settings) {
+            settings = Object.assign(
+                this.settings,
+                settings
+            );
+
+            localStorage.royalMainPanel = JSON.stringify(settings);
+        };
+
+        this.init = function (panel) {
             if (!(typeof $ === 'function' && typeof $().draggable === 'function')) {
                 return;
             }
@@ -49,7 +67,10 @@
                 snap: "window",
                 snapMode: "both",
                 snapTolerance: 50,
-                scroll: false
+                scroll: false,
+                stop: function(event, ui) {
+                    panel.addSettings(ui.position);
+                }
             });
 
             mainPanel.resizable({
@@ -57,16 +78,17 @@
                 minWidth: 300,
                 maxHeight: window.innerHeight,
                 maxWidth: window.innerWidth,
-                handles: "all"
+                handles: "all",
+                stop: function(event, ui) {
+                    panel.addSettings(ui.size);
+                }
             });
 
-            // TODO: load saved style.
-            mainPanel.css({
-                "width": "100%"
-            });
+            mainPanel.css(panel.settings);
+            clearInterval(panelInt);
+        };
 
-            clearInterval(intDrag);
-        }, 250);
+        var panelInt = setInterval(this.init(this), 250);
     };
 
     this.templates = new Templates();
@@ -76,7 +98,7 @@
     this.clear();
     this.build();
     this.include();
-    this.draggablePanel();
+    this.initPanel();
 
 
 })();
