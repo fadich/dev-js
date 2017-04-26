@@ -1,0 +1,26 @@
+{
+  "name": "dev-js",
+  "version": "0.0.1",
+  "description": "The application provides tools for automating some actions.",
+  "main": "royal-main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fadich/dev-js.git"
+  },
+  "keywords": [
+    "development",
+    "dev-tools"
+  ],
+  "author": "Fadi Ahmad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fadich/dev-js/issues"
+  },
+  "homepage": "https://github.com/fadich/dev-js#readme",
+  "devDependencies": {
+    "babel-cli": "^6.24.1"
+  }
+}

@@ -1,30 +1,106 @@
 (function Init() {
+    this.includeLibs = function () {
+        this.html.require("http://dev-js.loc/lib/random/royal-random-string.js");
+    };
+
+    this.includeModules = function () {
+        $('.royal-modules').text("");
+        this.html.require("http://dev-js.loc/modules/autofill/royal-autofill.js");
+    };
+
     this.clear = function () {
-        var elements = document.getElementsByClassName("royal-dev-js");
-        var smth = elements.length;
-
-        for (var i = 0; i < smth; i++) {
-            var el = elements[i];
-            if (el) {
-                el.remove();
-            }
-        }
-
-        return this;
+        this.html.clear(document.getElementsByClassName("royal-dev-js"));
     };
 
     this.build = function () {
-        this.html.require("http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js");
-        this.html.require("http://dev-js.loc/css/royal-main.css", this.html.type.css);
-        this.html.createElement(templates.index);
+        this.html.require("https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js");
+        this.html.require("https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css", this.html.type.css);
+        this.html.require("https://code.jquery.com/ui/1.12.1/jquery-ui.min.js");
 
-        return this;
+        this.html.require("https://fonts.googleapis.com/icon?family=Material+Icons", this.html.type.css);
+
+        this.html.require("http://dev-js.loc/css/royal-main.css", this.html.type.css);
+
+        this.html.createElement(this.templates.index);
+    };
+
+    this.include = function () {
+        var intInc = setInterval(function () {
+            if (typeof $ === 'function') {
+                this.includeLibs();
+                this.includeModules();
+
+                clearInterval(intInc);
+            }
+        }, 250);
+    };
+
+    this.initPanel = function () {
+        this.settings = (function () {
+            var locSettings = localStorage.royalMainPanel;
+            try {
+                return JSON.parse(locSettings);
+            } catch (e) {
+            }
+            return {};
+        })();
+
+        this.addSettings = function (settings) {
+            settings = Object.assign(
+                this.settings,
+                settings
+            );
+
+            localStorage.royalMainPanel = JSON.stringify(settings);
+        };
+
+        this.init = function (panel) {
+            if (!(typeof $ === 'function' && typeof $().draggable === 'function')) {
+                return;
+            }
+            var mainPanel = $(".royal-mainPanel");
+            mainPanel.draggable({
+                distance: 50,
+                handle: ".royal-dragButton",
+                opacity: 0.75,
+                containment: "window",
+                snap: "window",
+                snapMode: "both",
+                snapTolerance: 50,
+                scroll: false,
+                stop: function(event, ui) {
+                    panel.addSettings(ui.position);
+                }
+            });
+
+            mainPanel.resizable({
+                minHeight: 300,
+                minWidth: 300,
+                maxHeight: window.innerHeight,
+                maxWidth: window.innerWidth,
+                handles: "all",
+                stop: function(event, ui) {
+                    panel.addSettings(ui.size);
+                }
+            });
+
+            mainPanel.css(panel.settings);
+            clearInterval(panelInt);
+        };
+
+        var panelInt = setInterval(this.init(this), 250);
     };
 
     this.templates = new Templates();
     this.html = new HtmlDocument();
 
-    this.clear().build();
+    /* Rebuilding panel */
+    this.clear();
+    this.build();
+    this.include();
+    this.initPanel();
+
+
 })();
 
 function HtmlDocument() {
@@ -79,16 +155,36 @@ function HtmlDocument() {
         elem.innerHTML = content;
         elem.className = this.identityClass;
         parent.appendChild(elem);
+    };
+
+    this.clear = function (selector) {
+        var elements = selector;
+        var len = elements.length;
+
+        for (var i = 0; i < len; i++) {
+            var el = elements[i];
+            if (el) {
+                el.remove();
+            }
+        }
     }
 }
 
 function Templates() {
     this.index = (function () {
-        return "<div class='mainPanel " + (new HtmlDocument()).identityClass + "'><hr></div>";
+        // var els = document.getElementsByClassName("royal-dev-js");
+        return "<div class='royal-mainPanel " + (new HtmlDocument()).identityClass + "'>" +
+                "<div class='royal-panel-nav'>" +
+                    "<button class='royal-close-panel royal-button' " +
+                        "onclick='(new HtmlDocument()).clear(document.getElementsByClassName(\"royal-dev-js\"))'>" +
+                            "<i class='material-icons'>settings_power</i>" +
+                    "</button>" +
+                    "<div class='royal-dragButton'><i class='material-icons'>open_with</i></div>" +
+                "</div>" +
+                "<hr>" +
+                "<div class='royal-modules " + (new HtmlDocument()).identityClass + "'>" +
+                    "Loading. . ." +
+                "</div>" +
+            "</div>";
     })();
 }
-
-
-var script = document.createElement('script');
-script.src = "http://dev-js.loc/royal-main.js";
-document.head.appendChild(script);
