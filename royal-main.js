@@ -54,10 +54,20 @@
             localStorage.royalMainPanel = JSON.stringify(settings);
         };
 
-        this.init = function (panel) {
+        var panel = this;
+        this.init = function () {
+            if (!panel) {
+                clearInterval(panelInt);
+                console.info("There is no 'panel' argument given. Interval stopped.");
+            }
+
             if (!(typeof $ === 'function' && typeof $().draggable === 'function')) {
+                // Failed of initialization is caused by bad requiring jquery UI.
+                // Maybe it is a crutch, but it iw works correct...
+                this.html.require("https://code.jquery.com/ui/1.12.1/jquery-ui.min.js");
                 return;
             }
+
             var mainPanel = $(".royal-mainPanel");
             mainPanel.draggable({
                 distance: 50,
@@ -87,8 +97,7 @@
             mainPanel.css(panel.settings);
             clearInterval(panelInt);
         };
-
-        var panelInt = setInterval(this.init(this), 250);
+        var panelInt = setInterval(this.init, 250);
     };
 
     this.templates = new Templates();
@@ -99,7 +108,6 @@
     this.build();
     this.include();
     this.initPanel();
-
 
 })();
 
