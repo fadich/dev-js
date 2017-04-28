@@ -26,6 +26,7 @@
 }
 
 .royal-close-panel {
+    cursor: pointer;
     float:  right;
     height: 100%;
     border: none;

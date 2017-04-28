@@ -39,8 +39,10 @@
         this.settings = (function () {
             var locSettings = localStorage.royalMainPanel;
             try {
+                // var settings = JSON.parse(locSettings);
                 return JSON.parse(locSettings);
             } catch (e) {
+                console.error(e.message);
             }
             return {};
         })();
@@ -70,11 +72,11 @@
 
             var mainPanel = $(".royal-mainPanel");
             mainPanel.draggable({
-                distance: 50,
+                distance: 25,
                 handle: ".royal-dragButton",
                 opacity: 0.75,
                 containment: "window",
-                snap: "window",
+                snap: "body",
                 snapMode: "both",
                 snapTolerance: 50,
                 scroll: false,
