@@ -4,7 +4,9 @@
   "description": "The application provides tools for automating some actions.",
   "main": "royal-main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel src/ -d dist/ --presets es2015",
+    "watch": "babel src/ -d dist/ --presets es2015 -w",
+    "start": "npm run build && nodemon ./dist/server"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,11 @@
   },
   "homepage": "https://github.com/fadich/dev-js#readme",
   "devDependencies": {
-    "babel-cli": "^6.24.1"
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "express": "^4.15.2",
+    "nodemon": "^1.11.0"
   }
 }
