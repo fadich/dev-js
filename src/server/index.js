@@ -1,12 +1,10 @@
 let express = require('express');
 let app = express();
 
-import {mainPanel} from "./templates/index";
+import {index} from "./templates/panel/panel";
 
 app.get('/', function (req, res) {
-    res.send(
-        mainPanel
-    );
+    res.send(index);
 });
 
 app.listen(4242, function () {
