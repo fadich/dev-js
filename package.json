@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src/ -d dist/ --presets es2015",
     "watch": "babel src/ -d dist/ --presets es2015 -w",
-    "start": "npm run watch | nodemon ./dist/server"
+    "start": "concurrent \"npm run watch\" && \"nodemon ./dist/server\""
   },
   "repository": {
     "type": "git",
@@ -31,5 +31,8 @@
     "babel-preset-stage-2": "^6.24.1",
     "express": "^4.15.2",
     "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "concurrently": "^3.4.0"
   }
 }
