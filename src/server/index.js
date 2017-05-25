@@ -15,15 +15,20 @@ app.get('/', function (req, res) {
     res.send(index);
 });
 
-app.get('/require/{module}', function (req, res) {
-    console.log(123);
-    switch (req.param('module')) {
+app.get('/require/:module', function (req, res) {
+    let moduleName = req.param('module');
+    switch (moduleName) {
         case 'socket':
             res.sendFile(io);
             break;
         default:
             console.log("Trying to require unsupported module.");
+            res.send('Module "' + moduleName + '" not found')
     }
+});
+
+app.all('/*', function (req, res) {
+    res.send('Bad request');
 });
 
 app.listen(4242, function () {
